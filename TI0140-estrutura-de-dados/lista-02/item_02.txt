@@ -1,0 +1,12 @@
+Imagine que temos duas listas, L e V trocar os elementos
+de uma lista para outra, isto é, os valores da lista L vão para a lista V e vice-versa
+Calcule o número de execuções de instruções (linhas) desse algoritmo.
+
+troca_listas ( )
+    i ← 0                 (1x)
+    enquanto i < n faça   (n+1 vezes)
+        aux = L [i]     |
+        L [i] = V[i]    } (4n vezes)
+        V[i] = aux      |
+        i ← i + 1       |_____________
+                          5n + 2 vezes

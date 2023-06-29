@@ -1,0 +1,10 @@
+Considere o seguinte algoritmo:
+Conte quantas vezes cada uma das linhas é executada.
+
+ls ()
+1 aux = 1             (1x)
+2 i ← 0               (1x)
+3 enquanto i < n faça (n+1 vezes)
+4    aux = aux + i    (n vezes)
+5    i ← i + 1        (n vezes)
+6 retorne aux         (1x)

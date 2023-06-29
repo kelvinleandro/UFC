@@ -1,0 +1,26 @@
+Considere uma lista de inteiros L de tamanho n
+L: [16, 19, 41, 8, 42, 39, 33, 22, 29, 48]
+
+Considere o seguinte algoritmo que percorre a lista e sempre que encontra um número múltiplo de 3, divide o número por 3 e eleva ao quadrado.
+  multiplo_tres ( )
+1     i ← 0                                 (1x)
+2     enquanto i < n faça                   (n+1 vezes)
+3         se 3 | L [ i ] então              (n vezes)
+4             L [ i ] = L [ i ] ∗ 3       | (2d)
+5             L [ i ] = L [ i ] ∗ L [ i ] |
+6         i ← i + 1                         (n vezes)
+(Considere que o tamanho da lista n seja um múltiplo de 3.)
+
+a) Quantas vezes a linha 6 será executada? 
+R: n vezes
+
+b) Se a quantidade de elementos divisíveis por 3 for d, quantas vezes a linha 4 será executada?
+R: d vezes
+
+c) Se a quantidade de elementos divisíveis por 3 for d, qual o total de execuções de instruções do algoritmo?
+R: 3n + 2d + 2
+
+d) No melhor e no pior caso, quais os números de execuções de instruções realizadas?
+R: 
+melhor caso (não possui nenhum número divisivel por 3) = 3n + 2
+pior caso (todos são divisíveis por 3) = 5n + 2
