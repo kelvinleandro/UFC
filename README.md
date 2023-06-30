@@ -1,3 +1,3 @@
 # UFC
 
-Trabalhos e exercícios de disciplinas envolvendo programação durante o curso de Engenharia de Computação na UFC.
+Trabalhos/projetos de disciplinas durante minha graduação em Engenharia de Computação na UFC.
