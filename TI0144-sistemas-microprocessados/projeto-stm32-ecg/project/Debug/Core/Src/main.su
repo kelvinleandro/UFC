@@ -1,0 +1,10 @@
+../Core/Src/main.c:61:6:add_valuen	24	static
+../Core/Src/main.c:67:10:simpsons13mean	16	static
+../Core/Src/main.c:73:10:simpsons1140mean	48	static
+../Core/Src/main.c:83:10:lowpassfilter	24	static
+../Core/Src/main.c:87:10:filter	24	static
+../Core/Src/main.c:103:5:main	32	static
+../Core/Src/main.c:168:6:SystemClock_Config	80	static
+../Core/Src/main.c:209:13:MX_ADC_Init	24	static
+../Core/Src/main.c:263:13:MX_GPIO_Init	48	static
+../Core/Src/main.c:294:6:Error_Handler	8	static,ignoring_inline_asm

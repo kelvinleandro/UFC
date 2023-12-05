@@ -16,4 +16,4 @@ Trabalhos/projetos de disciplinas durante minha graduação em Engenharia de Com
 ## 4º semestre
 - [Métodos Numéricos](https://github.com/kelvinleandro/UFC/)
 - [Sinais e Sistemas](https://github.com/kelvinleandro/UFC/tree/main/TI0143-sinais-sistemas)
-- [Sistemas Microprocessados](https://github.com/kelvinleandro/UFC/)
+- [Sistemas Microprocessados](https://github.com/kelvinleandro/UFC/tree/main/TI0144-sistemas-microprocessados)
