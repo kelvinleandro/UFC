@@ -12,8 +12,8 @@ Desenvolvimento de um aparelho ECG utilizando STM32.
 
 ## Resultado Final
 
-![Resultado final](/final.gif)
+![Resultado final](https://github.com/kelvinleandro/UFC/blob/main/TI0144-sistemas-microprocessados/projeto-stm32-ecg/final.gif)
 
 ## Configuração do STM32 no STM32CubeIDE
 
-![STM32 configuração](/stm_config.png)
+![STM32 configuração](https://github.com/kelvinleandro/UFC/blob/main/TI0144-sistemas-microprocessados/projeto-stm32-ecg/stm_config.png)
