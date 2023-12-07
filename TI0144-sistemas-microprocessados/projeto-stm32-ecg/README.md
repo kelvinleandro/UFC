@@ -8,6 +8,8 @@ Desenvolvimento de um aparelho ECG utilizando STM32.
 
 - Módulo AD8232 (Sensor cardíaco)
 
+- Pmod R2R
+
 - Osciloscópio
 
 ## Resultado Final
