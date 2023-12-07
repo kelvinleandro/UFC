@@ -14,6 +14,6 @@ Trabalhos/projetos de disciplinas durante minha graduação em Engenharia de Com
 - [POO (Programação Orientada a Objetos)](https://github.com/kelvinleandro/UFC/tree/main/TI0142-POO)
 
 ## 4º semestre
-- [Métodos Numéricos](https://github.com/kelvinleandro/UFC/)
+- [Métodos Numéricos](https://github.com/kelvinleandro/UFC/tree/main/CK0182-metodos-numericos)
 - [Sinais e Sistemas](https://github.com/kelvinleandro/UFC/tree/main/TI0143-sinais-sistemas)
 - [Sistemas Microprocessados](https://github.com/kelvinleandro/UFC/tree/main/TI0144-sistemas-microprocessados)
