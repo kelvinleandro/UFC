@@ -22,4 +22,4 @@ Trabalhos/projetos de disciplinas durante minha graduação em Engenharia de Com
 - [Construção e Análise de Algoritmos (CANA)](./CK0183-CANA/)
 - [Introdução aos Sistemas de Controle]()
 - [Redes de Computadores I]()
-- [Sistemas Operacionais I]()
+- [Sistemas Operacionais I](./TI0146-sistemas-operacionais/)
