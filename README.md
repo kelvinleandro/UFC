@@ -21,5 +21,5 @@ Trabalhos/projetos de disciplinas durante minha graduação em Engenharia de Com
 ## 5º semestre
 - [Construção e Análise de Algoritmos (CANA)](./CK0183-CANA/)
 - [Introdução aos Sistemas de Controle]()
-- [Redes de Computadores I]()
+- [Redes de Computadores I](./TI0145-redes-de-computadores-1/)
 - [Sistemas Operacionais I](./TI0146-sistemas-operacionais/)
