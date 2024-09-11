@@ -7,3 +7,12 @@
 [submodule "TI0145-redes-de-computadores-1/lab-05/shellstation"]
 	path = TI0145-redes-de-computadores-1/lab-05/shellstation
 	url = https://github.com/kelvinleandro/shellstation.git
+[submodule "TI0145-redes-de-computadores-1/lab-05-socket/caramelo-sniffer-react"]
+	path = TI0145-redes-de-computadores-1/lab-05-socket/caramelo-sniffer-react
+	url = https://github.com/kelvinleandro/caramelo-sniffer-react.git
+[submodule "TI0145-redes-de-computadores-1/lab-05-socket/caramelo-sniffer"]
+	path = TI0145-redes-de-computadores-1/lab-05-socket/caramelo-sniffer
+	url = https://github.com/kelvinleandro/caramelo-sniffer.git
+[submodule "TI0145-redes-de-computadores-1/lab-05-socket/shellstation"]
+	path = TI0145-redes-de-computadores-1/lab-05-socket/shellstation
+	url = https://github.com/kelvinleandro/shellstation.git
