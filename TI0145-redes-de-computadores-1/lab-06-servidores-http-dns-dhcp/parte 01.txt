@@ -1,0 +1,3 @@
+HTTP: Usa TCP, porque precisa garantir a entrega confiável dos dados
+DNS: Usa UDP, porque são rápidas e simples
+DHCP: Usa UDP, porque o protocolo DHCP tem mecanismos internos para retransmitir mensagens caso uma não seja recebida
