@@ -23,3 +23,10 @@ Trabalhos/projetos de disciplinas durante minha graduação em Engenharia de Com
 - [Introdução aos Sistemas de Controle](./TI0118-sistemas-de-controle/)
 - [Redes de Computadores I](./TI0145-redes-de-computadores-1/)
 - [Sistemas Operacionais I](./TI0146-sistemas-operacionais/)
+
+## 6º semestre
+- [Fundamentos de Processamento Digital de Imagens]()
+- [Inteligência Computacional Aplicada]()
+- [Processamento Estatístico de Sinais]()
+- [Sistemas Distribuídos]()
+- [Sistemas Embarcados]()
