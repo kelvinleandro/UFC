@@ -25,7 +25,7 @@ Trabalhos/projetos de disciplinas durante minha graduação em Engenharia de Com
 - [Sistemas Operacionais I](./TI0146-sistemas-operacionais/)
 
 ## 6º semestre
-- [Fundamentos de Processamento Digital de Imagens]()
+- [Fundamentos de Processamento Digital de Imagens](./TI0147-PDI/)
 - [Inteligência Computacional Aplicada]()
 - [Processamento Estatístico de Sinais]()
 - [Sistemas Distribuídos]()
