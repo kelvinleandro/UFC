@@ -1,6 +1,6 @@
 # TI0151 - Sistemas Distribuídos
 
-Projetos da disciplina de *sistemas distribuídos (2024.2).
+Projetos da disciplina de *sistemas distribuídos (2024.2)*.
 
 ## Projeto 1
 
