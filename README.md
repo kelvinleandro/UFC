@@ -26,7 +26,7 @@ Trabalhos/projetos de disciplinas durante minha graduação em Engenharia de Com
 
 ## 6º semestre
 - [Fundamentos de Processamento Digital de Imagens](./TI0147-PDI/)
-- [Inteligência Computacional Aplicada]()
+- [Inteligência Computacional Aplicada](./TI0077-ICA/)
 - [Processamento Estatístico de Sinais]()
-- [Sistemas Distribuídos]()
+- [Sistemas Distribuídos](./TI0151-sistemas-distribuidos/)
 - [Sistemas Embarcados]()
