@@ -1,0 +1,64 @@
+---------- LAB 01 - Kernel Linux ----------
+
+Prática para instalação das ferramentas de build, configuração e compilação do Kernel do Linux.
+
+---------------------------------------------------------------------------
+Passos para a instalação das ferramentas de build do Linux (Necessário ser root para instalar)
+
+> sudo apt-get install make
+
+> sudo apt-get install curl
+
+> sudo apt-get install libncurses5-dev
+
+> sudo apt-get install qemu-system-x86
+
+> sudo apt-get install build-essential
+
+> sudo apt-get install flex
+
+> sudo apt-get install bison
+
+> sudo apt-get install libelf-dev
+
+
+---------------------------------------------------------------------------
+Inicialmente é necessário criar as variáveis de ambiente e depois os diretórios para configuração e compilação do kernel do linux
+
+A partir deste ponto é necessário estar logado como usuário padrão do linux. (NÃO SIGA ESSES PASSOS COMO ROOT).
+
+Caso tenha dúvidas de qual usuário está logado, por favor, executar o comando whoami no prompt.
+
+> cd ~
+> STAGE=~/terca <Apenas para a turma da terça>
+> STAGE=~/quinta <Apenas para a turma da quinta>
+> echo $STAGE
+> mkdir -p $STAGE
+>ls
+
+> TOP=$STAGE/teeny-linux
+> echo $TOP
+> mkdir -p $TOP
+> ls
+
+
+---------------------------------------------------------------------------
+Baixar o kernel do Linux e descompactar na pasta $STAGE
+
+> cd $STAGE (Obrigatório)
+
+> wget -c https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.15.70.tar.xz
+
+> tar -Jxvf linux-5.15.70.tar.xz
+
+
+
+---------------------------------------------------------------------------
+Configurar e compilar o kernel do Linux
+
+> cd $STAGE/linux-5.15.70
+ 
+> make O=$TOP/obj/linux-x86-allnoconfig allnoconfig
+> make O=$TOP/obj/linux-x86-allnoconfig nconfig
+
+> make O=$TOP/obj/linux-x86-allnoconfig -j2

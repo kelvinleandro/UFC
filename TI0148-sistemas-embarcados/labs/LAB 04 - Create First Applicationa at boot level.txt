@@ -1,0 +1,65 @@
+----------------- LAB 04 - Create First Applicationa at boot level -----------------
+
+1: ----------------- Setting the enviroment variables -----------------
+
+> cd ~
+> STAGE=~/terca <Apenas para a turma da terça>
+> STAGE=~/quinta <Apenas para a turma da quinta>
+
+> echo $STAGE
+
+> TOP=$STAGE/teeny-linux
+> echo $TOP
+
+2: ----------------- Create an example in C language ----------------- 
+
+> cd $TOP/initramfs/x86-busybox/root
+
+> nano lg.c (digitar esse exemplo em C)
+
+	#include <stdio.h>
+
+	int main(void){
+			int a = 0;
+
+			printf("Login do DETI, favor inserir um número inteiro: ");
+			scanf("%i", &a);
+			printf("Valor inserido eh = %d \r\n", a);
+	}
+
+> gcc lg.c -o lg -static
+
+> ls (verificar se o lg estar na cor verde)
+
+> cd $TOP/initramfs/x86-busybox
+
+> nano init (editar arquivo, já criado anteriormente no LAB03, para adicionar a linha /root/lg)
+
+	#!/bin/sh
+
+	mount -t proc none /proc
+	mount -t sysfs none /sys
+	mount -t debugfs none /sys/kernel/debug
+
+	echo -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n"
+
+	/root/lg
+	exec /bin/sh
+
+
+3: ----------------- Create RAM Filesystem ----------------- 
+
+> cd $TOP/initramfs/x86-busybox
+
+> find . | cpio -H newc -o > ../initramfs.cpio
+
+> cd ..
+
+> cat initramfs.cpio | gzip > $TOP/obj/initramfs.igz
+
+> cd 
+
+
+4: ----------------- Launch the Linux kernel binary & initrd in QEMU -----------------
+
+> qemu-system-x86_64 -kernel $TOP/obj/linux-x86-allnoconfig/arch/x86/boot/bzImage -initrd $TOP/obj/initramfs.igz -nographic -append "earlyprintk=serial,ttyS0 console=ttyS0"

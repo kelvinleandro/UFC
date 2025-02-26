@@ -1,0 +1,178 @@
+----------------- LAB 03 - First Linux Boot -----------------
+
+prática para boot em uma dist customizada do Linux. Seguir os passos de 1 a 4. 
+
+OBS1: Caso nÃ£o tenha o kernel do linux na máquina, por favor, executar inicialmente os passos 6.1 a 6.3 dessa prática, depois disso voltar para o passo 1.
+
+OBS2: Caso nÃ£o tenha o busybox na máquina, por favor, executar a prática LAB02.txt depois disso iniciar do passo 1.
+
+
+1: ----------------- Setting the enviroment variables -----------------
+
+> cd ~
+> STAGE=~/terca <Apenas para a turma da terça>
+> STAGE=~/quinta <Apenas para a turma da quinta>
+
+> echo $STAGE
+
+> TOP=$STAGE/teeny-linux
+> echo $TOP
+
+
+---------------------------------------------------------------------------
+Configure and compile BusyBox
+
+> cd $STAGE/busybox-1.34.1
+
+> make O=$TOP/obj/busybox-x86 defconfig
+> make O=$TOP/obj/busybox-x86 menuconfig
+
+> cd $TOP/obj/busybox-x86
+> make 
+> make install
+
+
+2 : ----------------- Build the directory structure of the initramfs ----------------- 
+> mkdir -pv $TOP/initramfs/x86-busybox
+
+> cd $TOP/initramfs/x86-busybox
+
+> mkdir -pv {bin,dev,sbin,etc,proc,sys/kernel/debug,usr/{bin,sbin},lib,lib64,mnt/root,root}
+
+> cp -av $TOP/obj/busybox-x86/_install/* $TOP/initramfs/x86-busybox
+
+> sudo cp -av /dev/{null,console,tty,sda1} $TOP/initramfs/x86-busybox/dev/
+
+
+3: ----------------- Create init and make it executable ----------------- 
+
+> nano $TOP/initramfs/x86-busybox/init
+
+		#!/bin/sh
+		 
+		mount -t proc none /proc
+		mount -t sysfs none /sys
+		mount -t debugfs none /sys/kernel/debug
+		 
+		echo -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n"
+		 
+		exec /bin/sh
+
+> chmod +x $TOP/initramfs/x86-busybox/init
+
+> cd $TOP/initramfs/x86-busybox
+
+> find . | cpio -H newc -o > ../initramfs.cpio
+
+> cd ..
+
+> du -csh initramfs.cpio
+
+> cat initramfs.cpio | gzip > $TOP/obj/initramfs.igz
+
+> du -csh *
+
+> cd $TOP/obj/
+
+
+> du -csh initramfs.igz
+
+
+4: ----------------- Turn these options on Kernel ----------------- 
+
+> cd $STAGE/linux-5.15.70/
+
+> make O=$TOP/obj/linux-x86-allnoconfig nconfig
+
+
+	[*] 64-bit kernel
+
+	-> General setup
+	[*] Configure standard kernel features (Expert Users)
+	  -> Configure standard kernel features (Expert Users)
+	  [*] Enable support for printk
+
+	-> General setup
+	[*] Initial RAM filesystem and RAM disk (initramfs/initrd) support
+
+	-> Executable file formats / Emulations
+	[*] Kernel support for ELF binaries
+	[*] Kernel support for scripts starting with #!
+
+	-> Device Drivers
+	  -> Character devices
+	  [*] Enable TTY
+
+	-> Device Drivers
+	  -> Character devices
+	    -> Serial drivers
+	    [*] 8250/16550 and compatible serial support
+	    [*] Console on 8250/16550 and compatible serial port
+
+	-> File systems
+	  -> Pseudo filesystems
+	  [*] /proc file system support
+	  [*] sysfs file system support
+
+	-> Kernel hacking                                                     
+	  -> Generic Kernel Debugging Instruments
+ 	  [*] Debug filesystem
+
+	-> Kernel hacking   
+	  -> x86 Debugging
+	  [*] Early printk
+
+
+	--- NÃƒO ESQUECER DE SALVAR!!! (F6) Nome: .config --- 
+
+> make O=$TOP/obj/linux-x86-allnoconfig -j2
+
+
+
+5: ----------------- Launch the Linux kernel binary & initrd in QEMU -----------------
+
+> qemu-system-x86_64 -kernel $TOP/obj/linux-x86-allnoconfig/arch/x86/boot/bzImage -initrd $TOP/obj/initramfs.igz -nographic -append "earlyprintk=serial,ttyS0 console=ttyS0"
+
+> Ctrl^A + x (Para sair do qemu)
+
+
+
+
+
+6: ----------------- Apenas para os que não possuem o Kernel do Linux baixado/instalado ----------------- 
+
+Caso nÃ£o tenha a pasta tl1, ou o kernel do linux não foi baixado/instalado seguir com os passos abaixo:
+
+6.1: ----------------- Setting the enviroment variables -----------------
+
+> cd ~
+> STAGE=~/terca <Apenas para a turma da terça>
+> STAGE=~/quinta <Apenas para a turma da quinta>
+> echo $STAGE
+
+> TOP=$STAGE/teeny-linux
+> echo $TOP
+
+
+6.2: ---------------------------------------------------------------------------
+Baixar o kernel do Linux e descompactar na pasta $STAGE
+
+> cd $STAGE (Obrigatório)
+
+> wget -c https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.15.70.tar.xz
+
+> tar -Jxvf linux-5.15.70.tar.xz
+
+
+
+6.3: ---------------------------------------------------------------------------
+Configurar e compilar o kernel do Linux
+
+> cd $STAGE/linux-5.15.70
+ 
+> make O=$TOP/obj/linux-x86-allnoconfig allnoconfig
+> make O=$TOP/obj/linux-x86-allnoconfig nconfig
+
+> make O=$TOP/obj/linux-x86-allnoconfig -j2 (primeira compilação do kernel)
+
+OBS: Após fazer a "primeira compilação do kernel", voltar para o início dessa prática (1).

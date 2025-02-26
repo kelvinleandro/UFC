@@ -1,0 +1,274 @@
+Today we are going to write a real driver without hardware.
+
+----------------- Table of Contents ----------------- 
+
+Kernel Space Program (Device Driver)
+Concept
+Functions used in this driver
+kmalloc()
+kfree()
+copy_from_user()
+copy_to_user()
+Open()
+write()
+read()
+close()
+Linux Device Driver Tutorial Programming â€“ Full Driver Code
+Makefile
+Building the Device Driver
+User Space Application
+Compile the User Space Application
+Execution (Output)
+
+We already know that in Linux everything is a File. So in this tutorial, we are going to develop two applications.
+
+
+----------------- User Space application (User program) ----------------- 
+Kernel Space program (Driver)
+The user Program will communicate with the kernel space program using the device file. Lets Start.
+
+
+----------------- Kernel Space Program (Device Driver) ----------------- 
+We are going to discuss more file operations in the device driver. Basically, there are four functions in the device driver.
+
+Open driver
+Write Driver
+Read Driver
+Close Driver
+Now we will see one by one of these functions. Before that, I will explain the concept of this driver.
+
+
+----------------- Concept ----------------- 
+Using this driver we can send strings or data to the kernel device driver using the write function. It will store that string in the kernel space. Then when I read the device file, it will send the data which is written by write by function to the userspace application.
+
+
+----------------- Functions used in this driver ----------------- 
+kmalloc()
+kfree()
+copy_from_user()
+copy_to_user()
+kmalloc()
+We will see the memory allocation methods available in the kernel, in our next tutorials. But now we will use only the kmalloc in this tutorial.
+
+kmalloc function is used to allocate the memory in kernel space. This is like a malloc() function in userspace. The function is fast (unless it blocks) and doesnâ€™t clear the memory it obtains. The allocated region still holds its previous content. The allocated region is also contiguous in physical memory.
+
+#include <linux/slab.h>
+void *kmalloc(size_t size, gfp_t flags);
+Arguments
+
+sizeâ€“ how many bytes of memory are required.
+
+flagsâ€“ the type of memory to allocate.
+
+
+
+The flags argument may be one of:
+
+GFP_USER â€“ Allocate memory on behalf of the user. May sleep.
+
+GFP_KERNEL â€“ Allocate normal kernel ram. May sleep.
+
+GFP_ATOMIC â€“ Allocation will not sleep. May use emergency pools. For example, use this inside interrupt handler.
+
+GFP_HIGHUSER â€“ Allocate pages from high memory.
+
+GFP_NOIO â€“ Do not do any I/O at all while trying to get memory.
+
+GFP_NOFS â€“ Do not make any fs calls while trying to get memory.
+
+GFP_NOWAIT â€“ Allocation will not sleep.
+
+__GFP_THISNODE â€“ Allocate node-local memory only.
+
+GFP_DMA â€“ Allocation is suitable for DMA. Should only be used for kmalloc caches. Otherwise, use a slab created with SLAB_DMA.
+
+
+
+Also, it is possible to set different flags by ORâ€™ing in one or more of the following additional flags:
+
+__GFP_COLD â€“ Request cache-cold pages instead of trying to return cache-warm pages.
+
+__GFP_HIGH â€“ This allocation has high priority and may use emergency pools.
+
+__GFP_NOFAIL â€“ Indicate that this allocation is in no way allowed to fail (think twice before using).
+
+__GFP_NORETRY â€“ If memory is not immediately available, then give up at once.
+
+__GFP_NOWARN â€“ If allocation fails, donâ€™t issue any warnings.
+
+__GFP_REPEAT â€“ If allocation fails initially, try once more before failing.
+
+There are other flags available as well, but these are not intended for general use, and so are not documented here. For a full list of potential flags, always refer to linux/gfp.h.
+
+kfree()
+This is like a free() function in the userspace. This is used to free the previously allocated memory.
+
+void kfree(const void *objp)
+
+
+
+Arguments 
+
+*objp â€“ pointer returned by kmalloc
+
+copy_from_user()
+This function is used to Copy a block of data from user space (Copy data from user space to kernel space).
+
+unsigned long copy_from_user(void *to, const void __user *from, unsigned long  n);
+
+Arguments
+
+to â€“ Destination address, in the kernel space
+
+from â€“ The source address in the user space
+
+n â€“ Number of bytes to copy
+
+Returns number of bytes that could not be copied. On success, this will be zero.
+
+copy_to_user()
+This function is used to Copy a block of data into userspace (Copy data from kernel space to user space).
+
+
+
+unsigned long copy_to_user(const void __user *to, const void *from, unsigned long  n);
+
+Arguments
+
+to â€“ Destination address, in the user space
+
+from â€“ The source address in the kernel space
+
+n â€“ Number of bytes to copy
+
+Returns number of bytes that could not be copied. On success, this will be zero.
+
+Open()
+This function is called first, whenever we are opening the device file. In this function, I am going to allocate the memory using kmalloc. In the userspace application, you can use open() system call to open the device file.
+
+static int etx_open(struct inode *inode, struct file *file)
+{
+        /*Creating Physical memory*/
+        if((kernel_buffer = kmalloc(mem_size , GFP_KERNEL)) == 0){
+            printk(KERN_INFO "Cannot allocate memory in kernel\n");
+            return -1;
+        }
+        printk(KERN_INFO "Device File Opened...!!!\n");
+        return 0;
+}
+
+write()
+When writing the data to the device file it will call this write function. Here I will copy the data from user space to kernel space using copy_from_user() function. In the userspace application, you can use write() system call to write any data the device file.
+
+static ssize_t etx_write(struct file *filp, const char __user *buf, size_t len, loff_t *off)
+{
+        copy_from_user(kernel_buffer, buf, len);
+        printk(KERN_INFO "Data Write : Done!\n");
+        return len;
+}
+
+read()
+When we read the device file it will call this function. In this function, I used copy_to_user(). This function is used to copy the data to the userspace application. In the userspace application, you can use read() system call to read the data from the device file.
+
+static ssize_t etx_read(struct file *filp, char __user *buf, size_t len, loff_t *off)
+{
+        copy_to_user(buf, kernel_buffer, mem_size);
+        printk(KERN_INFO "Data Read : Done!\n");
+        return mem_size;
+}
+
+close()
+When we close the device file that will call this function. Here I will free the memory that is allocated by kmalloc using kfree(). In the userspace application, you can use close() system call to close the device file.
+
+static int etx_release(struct inode *inode, struct file *file)
+{
+        kfree(kernel_buffer);
+        printk(KERN_INFO "Device File Closed...!!!\n");
+        return 0;
+}
+
+-------------------------------------------------------- ACTION --------------------------------------------------------
+
+
+----------------- Setting the enviroment variables -----------------
+> STAGE=~/terca ; TOP=$STAGE/teeny-linux ; echo $STAGE ; echo $TOP 
+
+
+----------------- Compile the module ----------------- 
+
+You can follow the steps as we have made in last class...
+
+1. Download file: rdd_kernel.tar.gz
+> cp rdd_kernel.tar.gz $TOP/initramfs/x86-busybox/root/
+> cd $TOP/initramfs/x86-busybox/root
+> tar -zxvf rdd_kernel.tar.gz
+> cd rdd_kernel/
+> make (Check the Makefile path)
+	
+
+
+----------------- Compile the User Space Application ----------------- 
+Use the below line in the terminal to compile the user space application.
+
+> cd $TOP/initramfs/x86-busybox/root
+> cd rdd_kernel/
+> gcc -o test_app test_app.c -static
+
+
+----------------- Create Initramfs File System and Execution (Output) ----------------- 
+
+> cd $TOP/initramfs/x86-busybox
+> find . | cpio -H newc -o > ../initramfs.cpio
+> cd ..
+> cat initramfs.cpio | gzip > $TOP/obj/initramfs.igz
+
+
+----------------- Launching the Linux kernel binary & initrd in QEMU -----------------
+
+> qemu-system-x86_64 -kernel $TOP/obj/linux-x86-allnoconfig/arch/x86/boot/bzImage -initrd $TOP/obj/initramfs.igz -nographic -append "earlyprintk=serial,ttyS0 console=ttyS0"
+
+
+----------------- Load the driver using insmod driver.ko ----------------- 
+
+--> In the embedded system, load the drive:
+
+insmod driver.ko (in the correct directory)
+
+--> And verify using dmesg
+
+	dmesg
+
+--> Run the application:
+
+	./test_app (Again, in the correct directory)
+
+
+*********************************
+*********************************
+****Please Enter the Option******
+1. Write
+2. Read
+3. Exit
+*********************************
+
+Select option 1 to write data to the driver and write the string
+1
+Your Option = 1
+Enter the string to write into driver : deti
+Data Writing ...Done!
+****Please Enter the Option******
+1. Write
+2. Read
+3. Exit
+*********************************
+That deti string got passed to the driver. And driver stored that string in the kernel space. That kernel space was allocated by kmalloc.
+Now select option 2 to read the data from the device driver.
+2
+Your Option = 2
+Data Reading ...Done!
+Data = deti
+See now, we got that string deti.
+
+--> Run dmesg again:
+
+	dmesg	

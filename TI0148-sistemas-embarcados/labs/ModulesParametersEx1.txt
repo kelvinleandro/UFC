@@ -1,0 +1,74 @@
+Module Parameters: #include<linux/moduleparam.h>
+
+---------------------------------------------------------------------
+The Linux kernel provides a simple framework, allowing drivers to declare parameters that the user can specify on either boot or module load and then have these parameters exposed in your driver as global variables. These module parameters also show up in sysfs. 
+
+Defining a module parameter is done via the macro module_param():
+
+module_param(name, type, perm);
+
+where name is the name of both the parameter exposed to the user and the variable holding the parameter inside your module. The type argument holds the parameter's data type:
+
+1 - byte = a byte 
+2 - short = a short integer
+3 - ushort =  an unsigned short integer
+4 - int = an integer
+5 - uint = an unsigned integer
+6 - long = a long integer
+7 - ulong = an unsigned long integer
+8 - charp = a pointer to a char
+9 - bool = a Boolean  
+
+The byte type is stored in a single char and the Boolean types are stored in variables of type int. The rest are stored in the corresponding primitive C types. Finally, the perm argument specifies the permissions of the corresponding file in sysfs. The permissions can be specified in the usual octal format, for example 0644 (owner can read and write, group can read, everyone else can read), or by ORing together the usual S_Ifoo defines, for example S_IRUGO | S_IWUSR (everyone can read, user can also write).
+
+Ex:
+int valueETX;
+module_param(valueETX, int, S_IRUSR|S_IWUSR); //Integer value
+
+----------------------------------------------------------------
+
+You can accept a comma-separated list of parameters that are stored in a C array via module_param_array():
+
+module_param_array(name, type, nump, perm);
+
+where name is again the external parameter and internal variable name, type is the data type, and perm is the sysfs permissions. The new argument, nump, is a pointer to an integer where the kernel will store the number of entries stored into the array. Note that the array pointed to by name must be statically allocated. The kernel determines the array's size at compile-time and ensures that it does not cause an overrun. 
+
+Ex:
+int arr_valueETX[4];
+module_param_array(arr_valueETX, int, NULL, S_IRUSR|S_IWUSR);      //Array of integers
+
+----------------------------------------------------------------
+
+1. Compile the example in the busybox root directory, create the new initramfs and run qemu bootloader
+
+1.1 Creating initramfs 
+
+> cd $TOP/initramfs/x86-busybox
+> find . | cpio -H newc -o > ../initramfs.cpio
+> cd ..
+> du -csh initramfs.cpio
+> cat initramfs.cpio | gzip > $TOP/obj/initramfs.igz
+> cd $TOP/obj/
+> du -csh initramfs.igz
+
+
+1.2 Launching the Linux kernel binary & initrd in QEMU
+
+> qemu-system-x86_64 -kernel $TOP/obj/linux-x86-allnoconfig/arch/x86/boot/bzImage -initrd $TOP/obj/initramfs.igz -nographic -append "earlyprintk=serial,ttyS0 console=ttyS0"
+
+2. In the embedded system, load the drive:
+
+	insmod hello_world.ko valueETX=14 nameETX="DETI" arr_valueETX=10,20,30,40
+
+3. And verify the parameters by using dmesg
+
+	dmesg
+	
+4. Check module_param_cb() is whether calling that handler function or not. For that, Change the variable in sysfs
+
+	echo 13 > /sys/module/hello_world/parameters/cb_valueETX
+	
+5. Now do dmesg and check.
+
+	sudo dmesg
+	

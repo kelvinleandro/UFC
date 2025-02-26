@@ -1,0 +1,168 @@
+----------------- LAB 05 - Creating First Module -----------------
+
+1: ----------------- Setting the enviroment variables -----------------
+
+> cd ~
+> STAGE=~/terca <Apenas para a turma da erça>
+> STAGE=~/quinta <Apenas para a turma da quinta>
+
+> echo $STAGE
+
+> TOP=$STAGE/teeny-linux
+> echo $TOP
+
+
+2: ----------------- Turn these options on Kernel to working with BusyBox ----------------- 
+
+> cd $STAGE/linux-5.15.70/
+
+> make O=$TOP/obj/linux-x86-allnoconfig nconfig
+
+	[*] Enable loadable module support  --->
+		[*]   Module unloading
+		[*]     Forced module unloading
+		[*]   Module versioning support
+
+	[*] 64-bit kernel
+
+	-> General setup
+	[*] Configure standard kernel features (Expert Users)
+	  -> Configure standard kernel features (Expert Users)
+	  [*] Enable support for printk
+
+	-> General setup
+	[*] Initial RAM filesystem and RAM disk (initramfs/initrd) support
+
+	-> Executable file formats / Emulations
+	[*] Kernel support for ELF binaries
+	[*] Kernel support for scripts starting with #!
+
+	-> Device Drivers
+	  -> Character devices
+	  [*] Enable TTY
+
+	-> Device Drivers
+	  -> Character devices
+	    -> Serial drivers
+	    [*] 8250/16550 and compatible serial support
+	    [*] Console on 8250/16550 and compatible serial port
+
+	-> File systems
+	  -> Pseudo filesystems
+	  [*] /proc file system support
+	  [*] sysfs file system support
+
+	-> Kernel hacking                                                     
+	  -> Generic Kernel Debugging Instruments
+ 	  [*] Debug filesystem
+
+	-> Kernel hacking   
+	  -> x86 Debugging
+	  [*] Early printk
+
+
+	--- NÃO ESQUECER DE SALVAR!!! (F6) Nome: .config --- 
+
+> make O=$TOP/obj/linux-x86-allnoconfig -j2
+
+> make O=$TOP/obj/linux-x86-allnoconfig modules
+
+
+
+3: ----------------- Building Modules and Install -----------------
+
+> cd $TOP/obj/linux-x86-allnoconfig
+
+> make INSTALL_MOD_PATH=$TOP/initramfs/x86-busybox modules_install
+
+
+4: ----------------- Source Hello Module -----------------
+
+> cd  $TOP/initramfs/x86-busybox/root
+> mkdir modules
+> cd  modules
+
+nano hello.c 
+ 
+#include <linux/module.h>       /* Needed by all modules */
+#include <linux/kernel.h>       /* Needed for KERN_INFO */
+#include <linux/init.h>         /* Needed for the macros */
+
+static int __init hello_start(void)
+{
+printk(KERN_INFO "Loading hello module...\n");
+printk(KERN_INFO "DETI, Hello world\n");
+return 0;
+}
+
+static void __exit hello_end(void)
+{
+printk(KERN_INFO "Goodbye DETI.\n");
+}
+
+module_init(hello_start);
+module_exit(hello_end);
+
+MODULE_LICENSE("GPL");
+
+5: ----------------- Building Hello Module -----------------
+
+> cd  $TOP/initramfs/x86-busybox/root
+> cd  modules
+> nano Makefile (Insert text below and save)
+
+obj-m = hello.o
+KVERSION = 5.15.70
+
+all:
+        make -C ~/<terca ou quinta>/teeny-linux/initramfs/x86-busybox/lib/modules/5.15.70/build M=$(PWD) modules
+clean:
+        make -C ~/<terca ou quinta>/teeny-linux/initramfs/x86-busybox/lib/modules/5.15.70/build M=$(PWD) clean
+
+
+> make (After save Makefile)
+
+
+6: ----------------- Creating initramfs ----------------- 
+
+> cd $TOP/initramfs/x86-busybox
+> find . | cpio -H newc -o > ../initramfs.cpio
+> cd ..
+> du -csh initramfs.cpio
+> cat initramfs.cpio | gzip > $TOP/obj/initramfs.igz
+> cd $TOP/obj/
+> du -csh initramfs.igz
+
+
+7: ----------------- Launching the Linux kernel binary & initrd in QEMU -----------------
+
+> qemu-system-x86_64 -kernel $TOP/obj/linux-x86-allnoconfig/arch/x86/boot/bzImage -initrd $TOP/obj/initramfs.igz -nographic -append "earlyprintk=serial,ttyS0 console=ttyS0"
+
+
+8: ----------------- Testing image -----------------
+
+No sistema embarcado executar os seguintes comandos:
+
+> cd /root/modules
+
+1 - Carregar modulos: 
+
+> dmesg
+
+> lsmod
+
+> insmod hello.ko (Verificar msg)
+
+> dmesg
+
+2 - Verificar modulos carregados:
+
+> lsmod
+
+3 - Remover modulos :
+
+> rmmod hello  (Verificar msg)
+
+> dmesg
+
+> lsmod

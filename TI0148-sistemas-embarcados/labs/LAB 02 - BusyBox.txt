@@ -1,0 +1,59 @@
+---------- LAB 02 - BusyBox ----------
+
+Prática para instalação e configuração do BusyBox.
+
+
+---------------------------------------------------------------------------
+Inicialmente é necessario setar as variaveis de ambiente para configuração e compilacao do BusyBox.
+
+OBS: Turma das tercas utilizar o diretorio terca; A turma da quinta utilizar o diretorio quinta. Caso nao tenha esses diretorios no seu computador por favor seguir os passos de criacao de todos os diretorios da pratica LAB01.txt que esta no SIGAA.
+
+A partir deste ponto é necessario estar logado como usuario padrao do linux. (NÃO SIGA ESSES PASSOS COMO ROOT).
+
+Caso tenha duvidas de qual usuario esta logado, por favor, executar o comando "whoami" no prompt.
+
+> cd ~
+> STAGE=~/terca <Apenas para a turma da terca>
+> STAGE=~/quinta <Apenas para a turma da quinta>
+> echo $STAGE
+
+> TOP=$STAGE/teeny-linux
+> echo $TOP
+
+
+---------------------------------------------------------------------------
+Baixar o BusyBox e descompactar na pasta $STAGE
+
+> cd $STAGE (Obrigatório)
+
+> wget -c https://busybox.net/downloads/busybox-1.34.1.tar.bz2
+
+> tar -xvf busybox-1.34.1.tar.bz2
+
+> mkdir -pv $TOP/obj/busybox-x86
+
+
+
+---------------------------------------------------------------------------
+Configurar e compilar o BusyBox
+
+> cd $STAGE/busybox-1.34.1
+
+> make O=$TOP/obj/busybox-x86 defconfig
+> make O=$TOP/obj/busybox-x86 menuconfig
+
+> cd $TOP/obj/busybox-x86
+> make 
+> make install
+
+
+---------------------------------------------------------------------------
+Utilizando o BusyBox no PC
+
+> cd $TOP/obj/busybox-x86/_install/bin
+
+> ./busybox ls
+
+> du -csh busybox 
+
+> ./busybox du -csh busybox
