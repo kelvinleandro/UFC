@@ -28,6 +28,6 @@ Trabalhos/projetos de disciplinas durante minha graduação em Engenharia de Com
 - [Autômatos e Teoria da Computação](./CK0187-automatos-teoria-computacao/)
 - [Fundamentos de Processamento Digital de Imagens](./TI0147-PDI/)
 - [Inteligência Computacional Aplicada](./TI0077-ICA/)
-- [Processamento Estatístico de Sinais]()
+- [Processamento Estatístico de Sinais](./TI0124-processamento-estatistico-de-sinais/)
 - [Sistemas Distribuídos](./TI0151-sistemas-distribuidos/)
 - [Sistemas Embarcados](./TI0148-sistemas-embarcados/)
