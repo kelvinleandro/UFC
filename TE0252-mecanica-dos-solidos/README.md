@@ -1,0 +1,1 @@
+# TE0252 - Fundamentos de Mecânica dos Sólidos
