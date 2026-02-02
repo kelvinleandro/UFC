@@ -47,3 +47,4 @@ Trabalhos/projetos de disciplinas durante minha graduação em Engenharia de Com
 
 - [Mecânica dos Sólidos](./TE0252-mecanica-dos-solidos/)
 - [Tópicos e Projetos em Engenharia de Computação I](./TI0160-topicos-eng-comp-1/)
+- [Visualização de Dados](./CK0266-visualizacao-de-dados/)

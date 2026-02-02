@@ -1,0 +1,14 @@
+{
+  "name": "c4ad0297ca928509",
+  "main": "c4ad0297ca928509@94.js",
+  "version": "94.0.0",
+  "homepage": "https://observablehq.com/d/c4ad0297ca928509",
+  "author": {
+    "name": "Kelvin",
+    "url": "https://observablehq.com/@kelvinleandro"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}

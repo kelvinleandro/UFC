@@ -1,0 +1,14 @@
+{
+  "name": "ae21a6450e10098f",
+  "main": "ae21a6450e10098f@237.js",
+  "version": "237.0.0",
+  "homepage": "https://observablehq.com/d/ae21a6450e10098f",
+  "author": {
+    "name": "Kelvin",
+    "url": "https://observablehq.com/@kelvinleandro"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}

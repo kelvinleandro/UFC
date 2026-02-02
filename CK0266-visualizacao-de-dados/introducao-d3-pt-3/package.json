@@ -1,0 +1,14 @@
+{
+  "name": "41d7638b4bda654a",
+  "main": "41d7638b4bda654a@248.js",
+  "version": "248.0.0",
+  "homepage": "https://observablehq.com/d/41d7638b4bda654a",
+  "author": {
+    "name": "Kelvin",
+    "url": "https://observablehq.com/@kelvinleandro"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
